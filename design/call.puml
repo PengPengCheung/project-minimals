@@ -1,0 +1,31 @@
+@startuml
+title 状态图
+
+scale 650 width
+note "红色表示呼叫方执行的操作\n蓝色表示被呼方执行的操作\n绿色表示系统执行的操作" as Note
+
+
+state CALLING #yellow {
+}
+
+state CONNECTING #yellow {
+}
+
+state fork_state <<fork>>
+state accept_state <<fork>>
+[*] -[#red,bold]-> fork_state : 呼叫
+fork_state -[#green,bold]-> BUSY : 被呼方忙碌
+accept_state -[#blue,bold]-> BUSY : 拒绝接听/超时未接听
+accept_state -[#blue,bold]-> CONNECTING : 接听
+BUSY -[#green,bold]right-> CANCELLED : 取消呼叫
+fork_state --> CALLING : 被呼方空闲
+
+CALLING -[#red,bold]-> CANCELLED : 取消呼叫
+CALLING -[#blue,bold]-> accept_state : 被呼方响应
+CONNECTING -[#red,bold]left-> CANCELLED : 取消呼叫
+CONNECTED --> [*]
+CONNECTING -[#blue,bold]-> CONNECTED : 连接成功
+CONNECTING -[#blue,bold]-> CONNECTED_FAIL : 连接失败
+CONNECTED_FAIL -[#green,bold]-> CANCELLED : 取消呼叫
+CANCELLED --> [*]
+@enduml
