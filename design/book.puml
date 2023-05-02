@@ -1,0 +1,17 @@
+@startmindmap
+'https://plantuml.com/mindmap-diagram
+
+title 会议室预约用例设计
+
+*[#lightblue] 预约会议室
+** 预约时长超过1小时
+***[#Orange] 抛出超过预约时长限制的异常
+** 预约时长不超过1小时
+*** 预约时间有冲突
+****[#Orange] 抛出预约时间冲突的异常
+*** 预约时间无冲突
+****[#lightgreen] 预约成功
+
+
+
+@endmindmap
